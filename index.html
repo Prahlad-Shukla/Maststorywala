@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mast Story Wala</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #000;
+      color: #f5f5f5;
+      overflow-x: hidden;
+    }
+
+    /* Moving background with custom image */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('bg.jpg') center/cover no-repeat;
+      z-index: -1;
+      opacity: 0.3;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #111;
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      animation: slideDown 1s ease forwards;
+    }
+    
+    .logo {
+      font-size: 1.8rem;
+      color: #e96b0a;
+      font-weight: 600;
+    }
+    nav ul {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    nav ul li {
+      margin-left: 1.5rem;
+    }
+    .nav-link {
+      color: #f5f5f5;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    .nav-link:hover {
+      color: #ff6600;
+    }
+    .support-link {
+      background: #ff6600;
+      color: #fff !important;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    .support-link:hover {
+      background: #e65c00;
+    }
+    .intro-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5rem 2rem;
+      background: url('bg.jpg') center/cover no-repeat;
+      flex-wrap: wrap;
+    }
+    .intro-text {
+      max-width: 50%;
+      animation: fadeInLeft 1.2s ease forwards;
+    }
+    .intro-text h1 {
+      font-size: 3rem;
+      color: #ff6600;
+      margin-bottom: 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid #ff6600;
+      animation: typing 3s steps(30, end) forwards, blink 0.75s step-end infinite;
+    }
+    .intro-text p {
+      font-size: 1.1rem;
+      color: #ccc;
+      opacity: 0;
+      animation: fadeIn 3s ease forwards 3s;
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.8rem 1.8rem;
+      background: #ff6600;
+      color: #fff;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.3s ease, transform 0.2s ease;
+      opacity: 0;
+      animation: fadeInUp 1s ease forwards 5s;
+    }
+    .btn:hover {
+      background: #e65c00;
+      transform: translateY(-2px);
+    }
+    .intro-image img {
+      width: 600px;
+      height: auto;
+      animation: zoomIn 1.5s ease forwards;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 2.2rem;
+      color: #ff6600;
+      margin: 2rem 0 1rem;
+      animation: fadeInDown 1s ease forwards;
+    }
+    .about-section, .support-section {
+      width: 100%;
+      padding: 3rem 2rem;
+      background: #111;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .about-text, .support-text {
+      flex: 1;
+      padding: 1rem;
+      color: #ccc;
+      animation: fadeInLeft 1s ease forwards;
+    }
+    .about-text p, .support-text p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+    .support-qr {
+      flex: 1;
+      text-align: center;
+      animation: fadeInRight 1s ease forwards;
+    }
+    .support-qr img {
+      width: 300px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #ff6600;
+    }
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.2rem;
+      margin: 2rem 0;
+    }
+    .video-grid iframe {
+      width: 100%;
+      height: 200px;
+      border: none;
+      border-radius: 6px;
+      background: #000;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .contact-card {
+      background: #111;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      color: #ff6600;
+      transition: background 0.3s ease, transform 0.2s ease;
+      animation: fadeIn 1s ease forwards;
+    }
+    .contact-card:hover {
+      background: #ff6600;
+      color: #fff;
+      transform: translateY(-3px);
+    }
+    .contact-card i {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #111;
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    /* Keyframes for animations */
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0 }
+      to { opacity: 1 }
+    }
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes zoomIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .intro-section {
+        flex-direction: column-reverse;
+        text-align: center;
+      }
+      .intro-text {
+        max-width: 100%;
+        margin-top: 2rem;
+      }
+      .intro-image img {
+        width: 200px;
+      }
+      .about-section, .support-section {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Adarsh Mishra</div>
+    <nav>
+      <ul>
+        <li><a href="#home" class="nav-link">Home</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#videos" class="nav-link">Videos</a></li>
+        <li><a href="#support" class="nav-link support-link">Support Me</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="home" class="intro-section">
+    <div class="intro-text">
+      <h1>Hello, I’m Adarsh Mishra</h1>
+      <p>🎥 Hey there, curious minds! Welcome to Mast Story Wala – the ultimate adda for everything your brain secretly craves! From mind-boggling facts to horror stories, politics, AI, quizzes & more. Get ready to binge and vibe! 😎</p>
+      <a href="https://www.youtube.com/@maststorywala" class="btn" target="_blank">Go to Channel</a>
+    </div>
+    <div class="intro-image">
+      <img src="andoo.png" alt="Adarsh Mishra Profile" />
+    </div>
+  </section>
+
+  <section id="about" class="about-section">
+    <div class="about-text">
+      <h2 class="section-title">About Me</h2>
+      <p>Welcome to Mast Story Wala – your one-stop destination for stories that inspire, entertain, and make you think! On this channel, we dive deep into a wide range of fascinating topics that keep your curiosity alive. Whether it’s educational insights, thought-provoking politics, spine-chilling horror tales, or cutting-edge AI trends – there’s something for every inquisitive mind. Hit subscribe and join this journey of knowledge and fun!</p>
+    </div>
+  </section>
+
+  <section id="videos" class="videos-section">
+    <h2 class="section-title">My Work</h2>
+    <div class="video-grid">
+      <iframe src="https://www.youtube.com/embed/kLrY0rVLJZs" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/ViRlo6FxXiM" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/Lgou5U-ZU34" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/SqIMwBiTYFg" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <section id="support" class="support-section">
+    <div class="support-text">
+      <h2 class="section-title">Support Me ❤️</h2>
+      <p>If you enjoy my content and want to support my journey, you can send your love here. Your support helps me keep creating amazing stories for you! 🚀</p>
+    </div>
+    <div class="support-qr">
+      <img src="QR.png" alt="UPI QR Code">
+    </div>
+  </section>
+
+  <section id="contact" class="contact-section">
+    <h2 class="section-title">Contact Me</h2>
+    <div class="contact-grid">
+      <a href="mailto:mishraadarsh324@gmail.com" class="contact-card"><i class="fas fa-envelope"></i><br>Email</a>
+      <a href="https://www.youtube.com/@maststorywala" target="_blank" class="contact-card"><i class="fab fa-youtube"></i><br>YouTube</a>
+      <a href="https://www.instagram.com/adarshmishra000?igsh=bDc2YzVxYzk4eGto" target="_blank" class="contact-card"><i class="fab fa-instagram"></i><br>Instagram</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Adarsh Mishra aka Mast Story Wala</p>
+  </footer>
+</body>
+</html>
