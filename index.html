@@ -3,207 +3,340 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mast Story Wala</title>
+  <title>Mast Story Wala - Interactive Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
+    /* Base styles */
+    :root {
+      --primary-color: #e96b0a;
+      --dark-bg: #0a0a0a;
+      --light-bg: #111;
+      --text-light: #f5f5f5;
+      --text-dark: #ccc;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: #000;
-      color: #f5f5f5;
+      background: var(--dark-bg);
+      color: var(--text-light);
       overflow-x: hidden;
     }
-
-    /* Moving background with custom image */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('bg.jpg') center/cover no-repeat;
-      z-index: -1;
-      opacity: 0.3;
+    
+    /* Background Canvas for Particles */
+    #particle-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.4;
     }
 
+    /* Header */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #111;
+      background: rgba(17, 17, 17, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       padding: 1rem 2rem;
       position: sticky;
       top: 0;
       z-index: 1000;
-      animation: slideDown 1s ease forwards;
+      animation: slideDown 1s ease-out;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .logo {
       font-size: 1.8rem;
-      color: #e96b0a;
-      font-weight: 600;
+      color: var(--primary-color);
+      font-weight: 700;
     }
-    nav ul {
+
+    /* Desktop Navigation */
+    .desktop-nav {
       display: flex;
       list-style: none;
       margin: 0;
       padding: 0;
     }
-    nav ul li {
-      margin-left: 1.5rem;
+    .desktop-nav li {
+      margin-left: 2rem;
     }
     .nav-link {
-      color: #f5f5f5;
+      color: var(--text-light);
       text-decoration: none;
       font-weight: 500;
       transition: color 0.3s;
+      position: relative;
+      padding-bottom: 5px;
+    }
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: var(--primary-color);
+        transition: width 0.4s ease;
+    }
+    .nav-link:hover::after {
+        width: 100%;
     }
     .nav-link:hover {
-      color: #ff6600;
+      color: var(--primary-color);
     }
     .support-link {
-      background: #ff6600;
+      background: var(--primary-color);
       color: #fff !important;
-      padding: 0.4rem 1rem;
-      border-radius: 20px;
+      padding: 0.6rem 1.4rem;
+      border-radius: 50px;
       font-weight: 600;
+      transition: background 0.3s ease, transform 0.3s ease;
     }
     .support-link:hover {
       background: #e65c00;
+      transform: scale(1.05);
     }
+    .support-link:hover::after {
+        width: 0;
+    }
+
+    /* Mobile Navigation */
+    .mobile-nav-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--text-light);
+        font-size: 1.8rem;
+        cursor: pointer;
+        z-index: 1001;
+    }
+    .mobile-nav {
+        display: none;
+    }
+
+    /* Hero Section */
     .intro-section {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 5rem 2rem;
-      background: url('bg.jpg') center/cover no-repeat;
+      min-height: 90vh;
       flex-wrap: wrap;
+      gap: 2rem;
     }
     .intro-text {
-      max-width: 50%;
-      animation: fadeInLeft 1.2s ease forwards;
+      flex: 1;
+      min-width: 300px;
+      animation: fadeInLeft 1.2s ease-out;
     }
     .intro-text h1 {
-      font-size: 3rem;
-      color: #ff6600;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: var(--primary-color);
       margin-bottom: 1rem;
+      font-weight: 700;
       white-space: nowrap;
       overflow: hidden;
-      border-right: 3px solid #ff6600;
+      border-right: 3px solid var(--primary-color);
       animation: typing 3s steps(30, end) forwards, blink 0.75s step-end infinite;
     }
     .intro-text p {
       font-size: 1.1rem;
-      color: #ccc;
+      color: var(--text-dark);
       opacity: 0;
-      animation: fadeIn 3s ease forwards 3s;
+      animation: fadeIn 3s ease forwards 3.2s;
     }
     .btn {
       display: inline-block;
       margin-top: 1.5rem;
-      padding: 0.8rem 1.8rem;
-      background: #ff6600;
+      padding: 0.9rem 2rem;
+      background: var(--primary-color);
       color: #fff;
       border-radius: 50px;
       text-decoration: none;
-      font-weight: 500;
-      transition: background 0.3s ease, transform 0.2s ease;
+      font-weight: 600;
+      transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
       opacity: 0;
-      animation: fadeInUp 1s ease forwards 5s;
+      animation: fadeInUp 1s ease forwards 5.2s;
     }
     .btn:hover {
       background: #e65c00;
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(233, 107, 10, 0.2);
+    }
+    .intro-image {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 300px;
     }
     .intro-image img {
-      width: 600px;
+      width: clamp(250px, 80%, 450px);
       height: auto;
-      animation: zoomIn 1.5s ease forwards;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 7px solid var(--primary-color);
+      box-shadow: 0 0 40px rgba(233, 107, 10, 0.5);
+      animation: zoomIn 1.5s ease-out;
+    }
+
+    /* General Section Styling */
+    .section {
+        padding: 5rem 2rem;
+        opacity: 0;
+        transform: translateY(50px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .section.visible {
+        opacity: 1;
+        transform: translateY(0);
     }
     .section-title {
       text-align: center;
-      font-size: 2.2rem;
-      color: #ff6600;
-      margin: 2rem 0 1rem;
-      animation: fadeInDown 1s ease forwards;
+      font-size: clamp(2rem, 6vw, 2.8rem);
+      color: var(--primary-color);
+      margin-bottom: 3rem;
+      font-weight: 700;
     }
     .about-section, .support-section {
-      width: 100%;
-      padding: 3rem 2rem;
-      background: #111;
+      background: var(--light-bg);
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       align-items: center;
       flex-wrap: wrap;
+      gap: 2rem;
     }
     .about-text, .support-text {
-      flex: 1;
-      padding: 1rem;
-      color: #ccc;
-      animation: fadeInLeft 1s ease forwards;
+      flex-basis: 50%;
+      min-width: 300px;
+      color: var(--text-dark);
     }
     .about-text p, .support-text p {
       font-size: 1.1rem;
-      line-height: 1.6;
+      line-height: 1.8;
     }
     .support-qr {
-      flex: 1;
+      flex-basis: 30%;
+      min-width: 250px;
       text-align: center;
-      animation: fadeInRight 1s ease forwards;
     }
     .support-qr img {
-      width: 300px;
+      width: clamp(200px, 100%, 250px);
       border-radius: 12px;
-      box-shadow: 0 0 20px #ff6600;
+      box-shadow: 0 0 25px rgba(255, 102, 0, 0.7);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
+    .support-qr img:hover {
+        transform: scale(1.05) rotate(3deg);
+        box-shadow: 0 0 40px rgba(255, 102, 0, 1);
+    }
+    
+    /* Video Section */
     .video-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.2rem;
-      margin: 2rem 0;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+    .video-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .video-container:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.5);
     }
     .video-grid iframe {
       width: 100%;
-      height: 200px;
+      height: 220px;
       border: none;
-      border-radius: 6px;
-      background: #000;
-    }
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin: 2rem 0;
-    }
-    .contact-card {
-      background: #111;
-      padding: 1rem;
-      border-radius: 8px;
-      text-align: center;
-      color: #ff6600;
-      transition: background 0.3s ease, transform 0.2s ease;
-      animation: fadeIn 1s ease forwards;
-    }
-    .contact-card:hover {
-      background: #ff6600;
-      color: #fff;
-      transform: translateY(-3px);
-    }
-    .contact-card i {
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
-    }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background: #111;
-      color: #999;
-      font-size: 0.9rem;
+      display: block;
     }
 
-    /* Keyframes for animations */
+    /* Contact Section */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .contact-card {
+      background: var(--light-bg);
+      padding: 2rem 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+      color: var(--primary-color);
+      transition: background 0.4s ease, transform 0.4s ease, border-color 0.4s ease;
+      text-decoration: none;
+      border: 2px solid transparent;
+    }
+    .contact-card:hover {
+      background: var(--primary-color);
+      color: #fff;
+      transform: translateY(-10px);
+      border-color: #fff;
+    }
+    .contact-card i {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      transition: transform 0.4s ease;
+    }
+    .contact-card:hover i {
+        transform: scale(1.2);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: var(--dark-bg);
+      color: #999;
+      font-size: 0.9rem;
+      margin-top: 3rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Scroll-to-top Button */
+    #scrollTopBtn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.4s ease, transform 0.4s ease;
+        z-index: 999;
+    }
+    #scrollTopBtn.visible {
+        display: block;
+        opacity: 1;
+    }
+    #scrollTopBtn:hover {
+        transform: scale(1.1);
+    }
+    
+    /* Animations */
     @keyframes typing {
       from { width: 0 }
       to { width: 100% }
@@ -216,19 +349,11 @@
       to { opacity: 1 }
     }
     @keyframes fadeInLeft {
-      from { opacity: 0; transform: translateX(-30px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes fadeInRight {
-      from { opacity: 0; transform: translateX(30px); }
+      from { opacity: 0; transform: translateX(-40px); }
       to { opacity: 1; transform: translateX(0); }
     }
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-30px); }
+      from { opacity: 0; transform: translateY(40px); }
       to { opacity: 1; transform: translateY(0); }
     }
     @keyframes zoomIn {
@@ -236,92 +361,285 @@
       to { opacity: 1; transform: scale(1); }
     }
     @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-20px); }
+      from { opacity: 0; transform: translateY(-100%); }
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* Responsive Design */
     @media (max-width: 768px) {
+      .desktop-nav {
+          display: none;
+      }
+      .mobile-nav-toggle {
+          display: block;
+      }
+      .mobile-nav {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        right: -100%; /* Start off-screen */
+        width: 100%;
+        height: 100vh;
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(10px);
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        transition: right 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+        z-index: 999;
+      }
+      .mobile-nav.active {
+          right: 0;
+      }
+      .mobile-nav li {
+          margin: 1.5rem 0;
+      }
+      .mobile-nav .nav-link {
+          font-size: 1.5rem;
+      }
+      .mobile-nav .support-link {
+          font-size: 1.2rem;
+          padding: 0.8rem 1.8rem;
+      }
+
       .intro-section {
         flex-direction: column-reverse;
         text-align: center;
+        padding: 4rem 1rem;
       }
-      .intro-text {
-        max-width: 100%;
-        margin-top: 2rem;
+      .intro-text h1 {
+        white-space: normal;
+        border-right: none;
+        animation: none; /* Disable typing on mobile */
+        animation: fadeIn 1s ease;
       }
-      .intro-image img {
-        width: 200px;
+      .intro-text p {
+          animation-delay: 0.5s;
+      }
+      .btn {
+          animation-delay: 1s;
       }
       .about-section, .support-section {
-        flex-direction: column;
         text-align: center;
       }
     }
   </style>
 </head>
 <body>
+  <!-- Particle background canvas -->
+  <canvas id="particle-canvas"></canvas>
+
   <header>
     <div class="logo">Adarsh Mishra</div>
+    <!-- Desktop Navigation -->
     <nav>
-      <ul>
+      <ul class="desktop-nav">
         <li><a href="#home" class="nav-link">Home</a></li>
         <li><a href="#about" class="nav-link">About</a></li>
         <li><a href="#videos" class="nav-link">Videos</a></li>
-        <li><a href="#support" class="nav-link support-link">Support Me</a></li>
         <li><a href="#contact" class="nav-link">Contact</a></li>
+        <li><a href="#support" class="nav-link support-link">Support Me</a></li>
       </ul>
     </nav>
+    <!-- Mobile Navigation Toggle -->
+    <button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Menu">
+        <i class="fas fa-bars"></i>
+    </button>
   </header>
 
-  <section id="home" class="intro-section">
-    <div class="intro-text">
-      <h1>Hello, I’m Adarsh Mishra</h1>
-      <p>🎥 Hey there, curious minds! Welcome to Mast Story Wala – the ultimate adda for everything your brain secretly craves! From mind-boggling facts to horror stories, politics, AI, quizzes & more. Get ready to binge and vibe! 😎</p>
-      <a href="https://www.youtube.com/@maststorywala" class="btn" target="_blank">Go to Channel</a>
-    </div>
-    <div class="intro-image">
-      <img src="andoo.png" alt="Adarsh Mishra Profile" />
-    </div>
-  </section>
+  <!-- Mobile Navigation Menu -->
+  <ul class="mobile-nav" id="mobile-nav">
+    <li><a href="#home" class="nav-link">Home</a></li>
+    <li><a href="#about" class="nav-link">About</a></li>
+    <li><a href="#videos" class="nav-link">Videos</a></li>
+    <li><a href="#contact" class="nav-link">Contact</a></li>
+    <li><a href="#support" class="nav-link support-link">Support Me</a></li>
+  </ul>
 
-  <section id="about" class="about-section">
-    <div class="about-text">
-      <h2 class="section-title">About Me</h2>
-      <p>Welcome to Mast Story Wala – your one-stop destination for stories that inspire, entertain, and make you think! On this channel, we dive deep into a wide range of fascinating topics that keep your curiosity alive. Whether it’s educational insights, thought-provoking politics, spine-chilling horror tales, or cutting-edge AI trends – there’s something for every inquisitive mind. Hit subscribe and join this journey of knowledge and fun!</p>
-    </div>
-  </section>
+  <main>
+    <section id="home" class="intro-section">
+      <div class="intro-text">
+        <h1>Hello, I’m Adarsh Mishra</h1>
+        <p>🎥 Hey there, curious minds! Welcome to Mast Story Wala – the ultimate adda for everything your brain secretly craves! From mind-boggling facts to horror stories, politics, AI, quizzes & more. Get ready to binge and vibe! 😎</p>
+        <a href="https://www.youtube.com/@maststorywala" class="btn" target="_blank">Go to Channel</a>
+      </div>
+      <div class="intro-image">
+        <img src="andoo.png" alt="Adarsh Mishra Profile" />
+      </div>
+    </section>
 
-  <section id="videos" class="videos-section">
-    <h2 class="section-title">My Work</h2>
-    <div class="video-grid">
-      <iframe src="https://www.youtube.com/embed/kLrY0rVLJZs" allowfullscreen></iframe>
-      <iframe src="https://www.youtube.com/embed/ViRlo6FxXiM" allowfullscreen></iframe>
-      <iframe src="https://www.youtube.com/embed/Lgou5U-ZU34" allowfullscreen></iframe>
-      <iframe src="https://www.youtube.com/embed/SqIMwBiTYFg" allowfullscreen></iframe>
-    </div>
-  </section>
+    <section id="about" class="section about-section">
+      <div class="about-text">
+        <h2 class="section-title">About Me</h2>
+        <p>Welcome to Mast Story Wala – your one-stop destination for stories that inspire, entertain, and make you think! On this channel, we dive deep into a wide range of fascinating topics that keep your curiosity alive. Whether it’s educational insights, thought-provoking politics, spine-chilling horror tales, or cutting-edge AI trends – there’s something for every inquisitive mind. Hit subscribe and join this journey of knowledge and fun!</p>
+      </div>
+    </section>
 
-  <section id="support" class="support-section">
-    <div class="support-text">
-      <h2 class="section-title">Support Me ❤️</h2>
-      <p>If you enjoy my content and want to support my journey, you can send your love here. Your support helps me keep creating amazing stories for you! 🚀</p>
-    </div>
-    <div class="support-qr">
-      <img src="QR.png" alt="UPI QR Code">
-    </div>
-  </section>
+    <section id="videos" class="section videos-section">
+      <h2 class="section-title">My Work</h2>
+      <div class="video-grid">
+        <div class="video-container"><iframe src="https://www.youtube.com/embed/kLrY0rVLJZs" allowfullscreen></iframe></div>
+        <div class="video-container"><iframe src="https://www.youtube.com/embed/ViRlo6FxXiM" allowfullscreen></iframe></div>
+        <div class="video-container"><iframe src="https://www.youtube.com/embed/Lgou5U-ZU34" allowfullscreen></iframe></div>
+        <div class="video-container"><iframe src="https://www.youtube.com/embed/SqIMwBiTYFg" allowfullscreen></iframe></div>
+      </div>
+    </section>
 
-  <section id="contact" class="contact-section">
-    <h2 class="section-title">Contact Me</h2>
-    <div class="contact-grid">
-      <a href="mailto:mishraadarsh324@gmail.com" class="contact-card"><i class="fas fa-envelope"></i><br>Email</a>
-      <a href="https://www.youtube.com/@maststorywala" target="_blank" class="contact-card"><i class="fab fa-youtube"></i><br>YouTube</a>
-      <a href="https://www.instagram.com/adarshmishra000?igsh=bDc2YzVxYzk4eGto" target="_blank" class="contact-card"><i class="fab fa-instagram"></i><br>Instagram</a>
-    </div>
-  </section>
+    <section id="support" class="section support-section">
+      <div class="support-text">
+        <h2 class="section-title">Support Me ❤️</h2>
+        <p>If you enjoy my content and want to support my journey, you can send your love here. Your support helps me keep creating amazing stories for you! 🚀</p>
+      </div>
+      <div class="support-qr">
+        <img src="QR.png" alt="UPI QR Code">
+      </div>
+    </section>
+
+    <section id="contact" class="section contact-section">
+      <h2 class="section-title">Contact Me</h2>
+      <div class="contact-grid">
+        <a href="mailto:mishraadarsh324@gmail.com" class="contact-card"><i class="fas fa-envelope"></i><br>Email</a>
+        <a href="https://www.youtube.com/@maststorywala" target="_blank" class="contact-card"><i class="fab fa-youtube"></i><br>YouTube</a>
+        <a href="https://www.instagram.com/adarshmishra000?igsh=bDc2YzVxYzk4eGto" target="_blank" class="contact-card"><i class="fab fa-instagram"></i><br>Instagram</a>
+      </div>
+    </section>
+  </main>
+  
+  <button id="scrollTopBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
 
   <footer>
     <p>© 2025 Adarsh Mishra aka Mast Story Wala</p>
   </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- Mobile Navigation ---
+        const navToggle = document.getElementById('mobile-nav-toggle');
+        const mobileNav = document.getElementById('mobile-nav');
+        const navIcon = navToggle.querySelector('i');
+
+        navToggle.addEventListener('click', () => {
+            mobileNav.classList.toggle('active');
+            // Toggle icon between bars and times (X)
+            if (mobileNav.classList.contains('active')) {
+                navIcon.classList.remove('fa-bars');
+                navIcon.classList.add('fa-times');
+            } else {
+                navIcon.classList.remove('fa-times');
+                navIcon.classList.add('fa-bars');
+            }
+        });
+
+        // Close mobile menu when a link is clicked
+        const mobileNavLinks = mobileNav.querySelectorAll('.nav-link');
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNav.classList.remove('active');
+                navIcon.classList.remove('fa-times');
+                navIcon.classList.add('fa-bars');
+            });
+        });
+
+        // --- Scroll-to-Top Button ---
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        window.onscroll = function() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        };
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // --- Scroll Animations ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1 
+        });
+
+        const sections = document.querySelectorAll('.section');
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // --- Particle Background ---
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray;
+
+        const particleCount = 100;
+
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = 'rgba(233, 107, 10, 0.5)';
+                ctx.fill();
+            }
+            update() {
+                if (this.x > canvas.width || this.x < 0) {
+                    this.directionX = -this.directionX;
+                }
+                if (this.y > canvas.height || this.y < 0) {
+                    this.directionY = -this.directionY;
+                }
+                this.x += this.directionX;
+                this.y += this.directionY;
+                this.draw();
+            }
+        }
+
+        function init() {
+            particlesArray = [];
+            for (let i = 0; i < particleCount; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * .4) - .2;
+                let directionY = (Math.random() * .4) - .2;
+                particlesArray.push(new Particle(x, y, directionX, directionY, size));
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+        }
+        
+        init();
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        });
+    });
+  </script>
 </body>
 </html>
